@@ -16,7 +16,8 @@ class Store:
         }
 
     def module_names(self) -> list[str]:
-        return sorted(self._tables)
+        # 下划线开头的是各模块的内部表（定级标准、待复核名单等），不进运营概览。
+        return sorted(name for name in self._tables if not name.startswith("_"))
 
     def rows(self, module: str) -> list[dict[str, Any]]:
         return self._tables.setdefault(module, [])
@@ -28,13 +29,19 @@ class Store:
         return None
 
     def overview(self) -> dict[str, object]:
+        # 缺陷模块在概览里的「待处理」专指待定级，条数必须与台账状态筛选结果一致。
+        pending_status = {"defect": "待定级"}
         modules: list[dict[str, object]] = []
         for name in self.module_names():
             rows = self.rows(name)
+            if name in pending_status:
+                pending_count = sum(1 for row in rows if row.get("status") == pending_status[name])
+            else:
+                pending_count = sum(1 for row in rows if row.get("pending"))
             modules.append({
                 "name": name,
                 "created": len(rows),
-                "pending": sum(1 for row in rows if row.get("pending")),
+                "pending": pending_count,
                 "abnormal": sum(1 for row in rows if row.get("abnormal")),
             })
         cards = [
