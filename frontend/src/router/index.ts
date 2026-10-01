@@ -14,6 +14,7 @@ const Substation = () => import('@/views/substation/index.vue')
 const Forecast = () => import('@/views/forecast/index.vue')
 const Vibration = () => import('@/views/vibration/index.vue')
 const Defect = () => import('@/views/defect/index.vue')
+const DefectBoard = () => import('@/views/defect/board.vue')
 const Maintjob = () => import('@/views/maintjob/index.vue')
 const Spare = () => import('@/views/spare/index.vue')
 const Patrol = () => import('@/views/patrol/index.vue')
@@ -37,6 +38,7 @@ const router = createRouter({
     { path: '/forecast', name: 'forecast', component: Forecast },
     { path: '/vibration', name: 'vibration', component: Vibration },
     { path: '/defect', name: 'defect', component: Defect },
+    { path: '/defect/board', name: 'defect-board', component: DefectBoard },
     { path: '/maintjob', name: 'maintjob', component: Maintjob },
     { path: '/spare', name: 'spare', component: Spare },
     { path: '/patrol', name: 'patrol', component: Patrol },
